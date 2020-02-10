@@ -1,0 +1,259 @@
+	<!--Aqui va-->
+<section class="jumbotron">
+	<div class="container">
+	<h2>Lista CFDI</h2>
+	<submenu/>
+	</div>
+</section>
+
+<!-- 	<section class="main container"> -->
+<div class="row">
+<div class="col-md-2">&nbsp;
+<button type="button" class="btn-link btn-lg" data-toggle="modal" data-target="#mdlReport" ng-click="btnReporte()"><i class="fas fa-file-excel "></i> Reporte</button>
+</div></div>
+	<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
+
+		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Fecha Certificaci&oacute;n</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Receptor</th>
+      <th scope="col">Emisor</th>
+      <th scope="col">Total</th>
+      <th scope="col">Fecha de Pago Programada</th>
+      <th>Estatus</th>
+      <th>Rafypak</th>
+      <th ng-if="permisoCompras" scope="col">Almacen</th>
+      <th ng-if="permisoCxP"scope="col">Cuentas por Pagar</th>
+      <th scope="col"></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="l in listCFDI" >
+      <td>{{l.fechaBoveda}}</td>
+      <td>{{l.uuid}}</td>
+      <td>{{l.nombreReceptor}}</td>
+      <td>{{l.rfcEmisor}}</td>
+      <td>{{l.total | currency}}</td>
+      <td align="center" ng-click="changeF($index)" class="btn-link">{{l.fechaProgramada}} <i class="far fa-edit"></i></td>
+      <td>{{l.estatusXml}}</td>
+      <td align="center">
+      <i ng-if="l.valRafipack" class="glyphicon glyphicon-ok"></i>
+      <i ng-if="!l.valRafipack" class="glyphicon glyphicon-remove"></i>
+      </td>
+      <td align="center" ng-if="permisoCompras">
+      <i ng-if="l.valCompras.validado" class="glyphicon glyphicon-ok"></i>
+      <button ng-if="!l.valCompras.validado" class="btn btn-small btn-primary" ng-disabled="!l.valRafipack" ng-click="validCompra(l.uuid);">
+      <i class="glyphicon glyphicon-ok"></i>
+	  </button></td>
+      <td ng-if="permisoCxP">
+      <i ng-if="l.valCxCobrar.validado" class="glyphicon glyphicon-ok"></i>
+      <button ng-if="!l.valCxCobrar.validado" class="btn btn-small btn-primary" ng-disabled="!l.valCompras.validado" ng-click="validCxP(l.uuid);">
+		<i class="glyphicon glyphicon-ok"></i>
+	  </button></td>
+	  
+      <td>
+      <button class="btn btn-small btn-primary" ng-click="viewFact(l.uuid);">
+								<i class="glyphicon glyphicon-eye-open"></i>
+	  </button>
+	  
+	  
+		<button class="btn btn-small btn-primary"
+				ng-click="delFact(l.uuid);">
+				<i class="glyphicon glyphicon-trash"></i>
+		</button>
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+	<div class="col-md-6">
+	 		<ul class="pagination .pagination-sm">
+				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+			</ul>
+			
+		</div>
+<!-- 	</section> -->
+	
+	  <div class="modal fade" id="mdlView">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+         <div class="modal-header">
+        <div class="jumbotron">
+          <h4 class="modal-title" align="center">Detalle de la Factura</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Fecha Certificaci&oacute;n</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Receptor</th>
+      <th scope="col">Emisor</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td scope="row">{{fact.fechaBoveda}}</td>
+      <td>{{fact.uuid}}</td>
+      <td>{{fact.nombreReceptor}}</td>
+      <td>{{fact.rfcEmisor}}</td>
+      <td>{{fact.total | currency}}</td>
+    
+    </tr>
+    
+  </tbody>
+</table>
+
+<br><br>
+<h4 align="center">Conceptos</h4>
+<br>
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Descripci&oacute;n</th>
+      <th scope="col">Valor Unitario</th>
+      <th scope="col">Importe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="c in factConcep">
+      <td scope="row">{{c.cantidad}}</td>
+      <td scope="row">{{c.descripcion}}</td>
+      <td scope="row">{{c.valorUnitario | currency}}</td>
+      <td scope="row">{{c.importe | currency}}</td>
+    
+    </tr>
+    
+  </tbody>
+</table>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!--   MODAL REPORTE -->
+
+  <div class="modal fade" id="mdlReport">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+         <div class="modal-header">
+        <div class="jumbotron">
+          <h4 class="modal-title" align="center">Reportes</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+
+			<div align="center">
+      	<div class="row">
+		<div class="col-md-12">
+		<label for="example-text-input" class="col-2 col-form-label">
+									Rango de Fecha</label>
+				<div class="input-group input-daterange col-23">
+					<input type="text" class="form-control" ng-model="fechaInicio">
+					<div class="input-group-addon"> - </div>
+					<input type="text" class="form-control" ng-model="fechaFin">
+				</div>
+			</div>
+			<br><br><br><br>
+			<div class="col-md-2">
+			<label for="example-text-input" class="col-2 col-form-label">
+									Tipo de Busqueda </label>
+									<div class="col-23">
+				<select class="form-control" ng-model="tipo" ng-change="optionChange()">
+				  <option value="periodo">Periodo</option>
+				  <option value="rfc">RFC</option>
+				  <option value="fecha">Fecha Programada de Pago</option>
+				  <option value="estatus">Estatus</option>
+				</select>
+				</div>
+			</div>
+			<div class="col-md-10">
+			<label for="example-text-input" class="col-2 col-form-label">
+									Introducir Busqueda </label>
+			<input type="text" class="form-control" ng-model="dato" ng-disabled="datoDis">
+			</div>
+			<br><br><br><br>
+			<div class="col-md-12" align="right">
+				
+				<a class="btn btn-small btn-success report" title="Administrador" ng-if="fechaInicio && fechaFin" data-toggle="tooltip" href="{{'/xml/generaReporteXls/'+fechaInicio+'/'+fechaFin+'/'+tipo+'/'+dato+'/prueba'}}" download="Concentrado de Facturas de {{fechaInicio}} a {{fechaFin}}.xls" ng-click="loading()">
+				<i class="fa fa-file-excel-o fa-lg"></i>
+					Descargar Reporte
+				</a>
+			</div>
+			
+			
+			</div> <!-- END ROW -->
+	
+		
+		
+	</div> <!-- END BODY -->
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+   <!-- Modal Fecha -->
+  <div class="modal fade" id="mdlNewFecha" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ng-click="newDate=''">&times;</button>
+          <h4 class="modal-title">Cambio de Fecha Programada</h4>
+        </div>
+        <div class="modal-body">
+        <label for="example-text-input" class="col-2 col-form-label">
+									Fecha Actual</label><br>
+         {{dFecha.fechaProgramada}}<br>
+			<label for="example-text-input" class="col-2 col-form-label">
+									Nueva Fecha</label>
+			<input class="form-control datepicker" ng-model="newDate">
+			<br>
+			<div align="right">
+			<button type="button" class="btn-success" ng-click="updateFecha()">Cambiar</button>
+			</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="newDate=''">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  

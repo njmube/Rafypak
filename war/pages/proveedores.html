@@ -1,0 +1,252 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Ver y Modificar Informaci&oacute;n de los Proveedores</h2>
+		<p>{{nombreEmpresa}}</p>
+		<submenu />
+	</div>
+</section>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td><strong>RFC</strong>
+						<td><strong>NOMBRE</strong></td>
+						<td><strong>EMAIL</strong></td>
+						<td><strong>USUARIO</strong></td>
+						<td><strong>ACCIONES</strong></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="proveedor in proveedores">
+						<td>{{proveedor.rfc}}</td>
+						<td>{{proveedor.nombre}}</td>
+						<td>{{proveedor.email}}</td>
+						<td>{{proveedor.usuario}}</td>
+						<td><button class="btn btn-small"
+								ng-click="editar(proveedor)">
+								<i class="glyphicon glyphicon-edit"></i>
+							</button>
+							<button class="btn btn-small"
+								ng-click="eliminar(proveedor)">
+								<i class="glyphicon glyphicon-remove"></i>
+							</button></td>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<button class="btn" ng-click="nuevoCliente()">
+			<i class="fa fa-plus"></i>Agregar Proveedor
+		</button>
+	</div>
+</div>
+
+<!-- Modal para agregar Proveedor -->
+<div class="modal fade" id="newProveedor" role="dialog" tabindex='-1'>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			 
+			 <div class="modal-header">
+			 	<h3>Proveedor</h3>
+			 </div>
+			 
+			 <div class="modal-body">
+			 	<form name="form" ng-submit="EnviarFormulario()">
+				<article class="post clearfix">
+				<div class="row">
+				<div class="col-md-12">
+					<br> Nombre del Proveedor: <input type="text"
+						class="form-control" ng-model="proveedor.nombre" required>
+						</div>
+						<div class="col-md-6">
+					<br> RFC del Proveedor: <input type="text"
+						class="form-control" ng-model="proveedor.rfc" required>
+						</div>
+						<div class="col-md-6">
+					<br> Tipo: <select ng-model="proveedor.tipo" class="form-control">
+							  <option value="Materiales">Materiales</option>
+							  <option value="Servicios">Servicios</option>
+							</select>
+							</div>
+							<div class="col-md-6">
+					<br> Dias de Credito: <input type="number"
+						class="form-control" ng-model="proveedor.diasCredito" required> 
+						</div>
+						<div class="col-md-6">
+					<br> Nombre de usuario: <input type="text"
+						class="form-control" ng-model="proveedor.usuario" required>
+						</div>
+						<div class="col-md-6">
+					<br> Contrase&ntilde;a: <input type="password" class="form-control" name="pass" id="pass"
+						ng-model="proveedor.pass" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*)[A-Za-z\d]{8,}$/" required ng-change="validatePass()">
+						</div>
+						<div class="col-md-6">
+					<br>Confirmar Contrase&ntilde;a: <input type="password" class="form-control" name="passconfirm" id="passconfirm"
+						ng-model="proveedor.passconfirm" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*)[A-Za-z\d]{8,}$/" required ng-change="validatePass()"> 
+						</div>
+						<div class="col-md-12">
+					<br><label ng-show="!form.pass.$valid">Debe contener 8 car&aacute;cteres, m&iacute;nimo, una may&uacute;scula, una min&uacute;scula y un n&uacute;mero.</label>
+					<div ng-show="!form.passconfirm.$untouched"><br><label ng-show="IsMatchP">Las contrase&ntilde;as ingresadas no coinciden</label></div>
+					</div>
+					
+					<div class="col-md-2">
+						<br> CP: <input type="text"
+							class="form-control" ng-model="proveedor.cp" required>
+					</div>
+					<div class="col-md-2">
+						<br> Forma de Pago: <input type="text"
+							class="form-control" ng-model="proveedor.formaDePago" required>
+					</div>
+					<div class="col-md-2">
+						<br> Metodo de Pago: <input type="text"
+							class="form-control" ng-model="proveedor.metodoDePago" required>
+					</div>
+					<div class="col-md-2">
+						<br> IVA: <input type="text"
+							class="form-control" ng-model="proveedor.iva" required>
+					</div>
+					<div class="col-md-2">
+						<br> RETIVA: <input type="text"
+							class="form-control" ng-model="proveedor.retiva" required>
+					</div>
+					<div class="col-md-2">
+						<br> RETISR: <input type="text"
+							class="form-control" ng-model="proveedor.retisr" required>
+					</div>
+					<div class="col-md-12">
+						<br> Contacto: <input type="text"
+							class="form-control" ng-model="proveedor.contacto" required>
+					</div>
+					
+					<div class="col-md-6">
+					<br> Email: <input
+						type="email" ng-model="proveedor.email" name="email" id="email"
+						class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required ng-change="validate()"> 
+						</div>
+						<div class="col-md-6">
+					<br> Confirmar Email: <input
+						type="email" ng-model="proveedor.emailconfirm" name="emailconfirm" id="emailconfirm"
+						class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required ng-change="validate()"> 
+						</div>
+						<div class="col-md-12">
+					<div ng-show="!form.emailconfirm.$untouched"><br><label ng-show="IsMatch">Los correos ingresados no coinciden</label></div>
+					</div>
+					</div>
+					<button type="submit" value="Guardar" class="btn" ng-show="acceptSubmit()">
+						Guardar</button>
+					<button type="submit" value="Limpiar" class="btn">Limpiar</button>
+				</article>
+			</form>	
+			 </div>
+			 <div class="modal-footer">
+        		<button type="button" class="btn btn-default" ng-click="guardarProveedor()">Enviar</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal para editar Proveedor -->
+<div class="modal fade" id="editProveedor" role="dialog" tabindex='-1'>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			 
+			 <div class="modal-header">
+			 	<h3>Proveedor</h3>
+			 </div>
+			 
+			 <div class="modal-body">
+			 	<form name="form" ng-submit="EnviarFormulario()">
+				<article class="post clearfix">
+					<div class="row">
+				<div class="col-md-12">
+					<br> Nombre del Proveedor: <input type="text"
+						class="form-control" ng-model="proveedor.nombre" required>
+						</div>
+						<div class="col-md-6">
+					<br> RFC del Proveedor: <input type="text"
+						class="form-control" ng-model="proveedor.rfc" required>
+						</div>
+						<div class="col-md-6">
+					<br> Tipo: <select ng-model="proveedor.tipo" class="form-control">
+							  <option value="Materiales">Materiales</option>
+							  <option value="Servicios">Servicios</option>
+							</select>
+							</div>
+							<div class="col-md-6">
+					<br> Dias de Credito: <input type="number"
+						class="form-control" ng-model="proveedor.diasCredito" required> 
+						</div>
+						<div class="col-md-6">
+					<br> Nombre de usuario: <input type="text"
+						class="form-control" ng-model="proveedor.usuario" required>
+						</div>
+						<div class="col-md-6">
+					<br> Contrase&ntilde;a: <input type="password" class="form-control" name="pass" id="pass"
+						ng-model="proveedor.pass" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*)[A-Za-z\d]{8,}$/" required ng-change="validatePass()">
+						</div>
+						<div class="col-md-6">
+					<br>Confirmar Contrase&ntilde;a: <input type="password" class="form-control" name="passconfirm" id="passconfirm"
+						ng-model="proveedor.passconfirm" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*)[A-Za-z\d]{8,}$/" required ng-change="validatePass()"> 
+						</div>
+						<div class="col-md-12">
+					<br><label ng-show="!form.pass.$valid">Debe contener 8 car&aacute;cteres, m&iacute;nimo, una may&uacute;scula, una min&uacute;scula y un n&uacute;mero.</label>
+					<div ng-show="!form.passconfirm.$untouched"><br><label ng-show="IsMatchP">Las contrase&ntilde;as ingresadas no coinciden</label></div>
+					</div>
+					
+					<div class="col-md-2">
+						<br> CP: <input type="text"
+							class="form-control" ng-model="proveedor.cp" required>
+					</div>
+					<div class="col-md-2">
+						<br> Forma de Pago: <input type="text"
+							class="form-control" ng-model="proveedor.formaDePago" required>
+					</div>
+					<div class="col-md-2">
+						<br> Metodo de Pago: <input type="text"
+							class="form-control" ng-model="proveedor.metodoDePago" required>
+					</div>
+					<div class="col-md-2">
+						<br> IVA: <input type="text"
+							class="form-control" ng-model="proveedor.iva" required>
+					</div>
+					<div class="col-md-2">
+						<br> RETIVA: <input type="text"
+							class="form-control" ng-model="proveedor.retiva" required>
+					</div>
+					<div class="col-md-2">
+						<br> RETISR: <input type="text"
+							class="form-control" ng-model="proveedor.retisr" required>
+					</div>
+					<div class="col-md-12">
+						<br> Contacto: <input type="text"
+							class="form-control" ng-model="proveedor.contacto" required>
+					</div>
+					
+					<div class="col-md-6">
+					<br> Email: <input
+						type="email" ng-model="proveedor.email" name="email" id="email"
+						class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required ng-change="validate()"> 
+						</div>
+						<div class="col-md-6">
+					<br> Confirmar Email: <input
+						type="email" ng-model="proveedor.emailconfirm" name="emailconfirm" id="emailconfirm"
+						class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required ng-change="validate()"> 
+						</div>
+						<div class="col-md-12">
+					<div ng-show="!form.emailconfirm.$untouched"><br><label ng-show="IsMatch">Los correos ingresados no coinciden</label></div>
+					</div>
+					</div>
+					<button type="submit" value="Guardar" class="btn" ng-show="acceptSubmit()">
+						Guardar</button>
+					<button type="submit" value="Limpiar" class="btn">Limpiar</button>
+				</article>
+			</form>	
+			 </div>
+			 <div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="actualizar()">Enviar</button>
+      		</div>
+		</div>
+	</div>
+</div>

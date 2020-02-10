@@ -1,0 +1,46 @@
+<section class="jumbotron">
+	<div class="container">
+		<h2>Validaci&oacute;n de XML</h2>
+		<submenu />
+	</div>
+</section>
+<div class="container">
+	<div class="row" >
+		<input id="b_pics" type="file" class="file" multiple="true"
+			multiple-File-Model="b_pics" accept="application/xml" required /><br>
+
+		<button type="button" class="btn" data-dismiss="modal"
+			ng-click="ok(); porProcesar=true">Validar</button>
+		<hr>
+		<label id="cadena" ng-show="false"></label>
+	</div>
+
+	<div class="row" ng-show="porProcesar">
+		<h4>Factura</h4>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Cantidad</th>
+					<th>Descripci&oacute;n</th>
+					<th>Valor Unitario</th>
+					<th>Importe</th>
+					<th>Validado por Rafypack</th>
+					<th>Validado por SAT</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="c in conceptos">
+				<tr ng-repeat="a in c">
+					<td>{{a.cantidad}}</td>
+					<td>{{a.descripcion}}</td>
+					<td>{{a.valorUnitario | currency}}</td>
+					<td>{{a.importe | currency}}</td>
+					<td><i class="glyphicon glyphicon-ok"></i></td>
+					<td><i class="glyphicon glyphicon-ok"></i></td>
+					
+				</tr>
+		
+
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes  autoGenerate="true">
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="BovedaRenglon" ancestor="false" source="auto">
+        <property name="rfcEmisor" direction="asc"/>
+        <property name="fechaBoveda" />
+         <property name="estatus" direction="asc"/>
+    </datastore-index>
+
+       <datastore-index kind="FacturaBoveda" ancestor="false" source="auto">
+        <property name="rfcEmisor" direction="asc"/>
+        <property name="fechaBoveda" direction="desc"/>
+       <!--   <property name="estatus" direction="asc"/> -->
+    </datastore-index>
+</datastore-indexes>

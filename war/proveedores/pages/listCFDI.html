@@ -1,0 +1,144 @@
+	<!--Aqui va-->
+<section class="jumbotron">
+	<div class="container">
+	<h2>Lista CFDI</h2>
+	<submenu/>
+	</div>
+</section>
+
+	<section class="main container">
+		<input id="b_pics" type="file" class="file" multiple="true"
+			multiple-File-Model="b_pics" accept="application/xml" required /><br>
+			<div class="col-md-3">
+			<label>Orden de Compra</label>
+<input type="text" maxlength="7" class="form-control" ng-model="ordenCompra" ng-disabled="disOrdenC" required  /><br>
+
+		<button type="button" class="btn" ng-click="ok()">Subir</button>
+		<hr>
+		<label id="cadena" ng-show="false"></label>
+		
+	</div>
+	</section>
+	<div class="col-md-6">
+			<ul class="pagination .pagination-sm" style="margin:0;">
+				<li ng-repeat="abc in paginas" id="{{'pagA'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+
+			</ul>
+			
+		</div>
+
+		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Fecha Certificaci&oacute;n</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Receptor</th>
+      <th scope="col">Emisor</th>
+      <th scope="col">Estatus</th>
+      <th scope="col">Total</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="l in listCFDI">
+      <td scope="row">{{l.fechaCertificacion}}</td>
+      <td>{{l.uuid}}</td>
+      <td>{{l.nombreReceptor}}</td>
+      <td>{{l.rfcEmisor}}</td>
+      <td>{{valid(l.valCompras.validado,l.valCxCobrar.validado,l.valRafipack.validado)}}</td>
+      <td>{{l.total | currency}}</td>
+      <td>
+      <button class="btn btn-small btn-primary" ng-click="viewFact(l.uuid);">
+								<i class="glyphicon glyphicon-eye-open"></i>
+	  </button>
+		<button class="btn btn-small btn-primary"
+				ng-click="delFact(l.uuid);">
+				<i class="glyphicon glyphicon-remove"></i>
+		</button>
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+	<div class="col-md-6">
+	 		<ul class="pagination .pagination-sm">
+				<li ng-repeat="abc in paginas" id="{{'pagB'+abc}}"
+					ng-click="cargarPagina(abc)"><a>{{abc}}</a></li>
+			</ul>
+			
+		</div>
+	</section>
+	
+	  <div class="modal fade" id="mdlView">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+        <div class="jumbotron">
+          <h4 class="modal-title" align="center">Detalle de la Factura</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Fecha Certificaci&oacute;n</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Receptor</th>
+      <th scope="col">Emisor</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{fact.fechaCertificacion}}</td>
+      <td>{{fact.uuid}}</td>
+      <td>{{fact.nombreReceptor}}</td>
+      <td>{{fact.rfcEmisor}}</td>
+      <td>{{fact.total | currency}}</td>
+    
+    </tr>
+    
+  </tbody>
+</table>
+
+<br><br>
+<h4 align="center" >Conceptos</h4>
+<br>
+
+ <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Descripci&oacute;n</th>
+      <th scope="col">Valor Unitario</th>
+      <th scope="col">Importe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="c in factConcep">
+      <td scope="row">{{c.cantidad}}</td>
+      <td scope="row">{{c.descripcion}}</td>
+      <td scope="row">{{c.valorUnitario | currency}}</td>
+      <td scope="row">{{c.importe | currency}}</td>
+    
+    </tr>
+    
+  </tbody>
+</table>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
